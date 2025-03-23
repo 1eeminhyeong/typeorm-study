@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { config } from './config.service';
+import { Cat } from 'src/domain/cat.entity';
 
 @Injectable()
 export class MysqlConfigService implements TypeOrmOptionsFactory {
@@ -28,9 +29,10 @@ export class MysqlConfigService implements TypeOrmOptionsFactory {
       timezone: 'Z',
       logging: false,
       synchronize: false,
-      entities: [__dirname + '/domain/*{.ts,.js}'],
-      migrations: [__dirname, '/migrations/**/*{.ts,.js}'],
+      entities: [__dirname + '/domain/*.{ts,js}'],
+      migrations: [__dirname + '/migrations/**/*.{ts,js}'],
       migrationsRun: false,
+      autoLoadEntities: true,
     };
   }
 }

@@ -14,18 +14,28 @@ export class CatsService {
   }
 
   findAll() {
-    return `This action returns all cats`;
+    return this.catRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cat`;
+  async findOne(id: number) {
+    return await this.catRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateCatDto: UpdateCatDto) {
-    return `This action updates a #${id} cat`;
+  async update(id: number, updateCatDto: UpdateCatDto) {
+    const cat = await this.catRepository.findOne({ where: { id } });
+    if (!cat) {
+      throw new Error('Cat not found!');
+    }
+    Object.assign(cat, updateCatDto);
+
+    return await this.catRepository.save(cat);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cat`;
+  async remove(id: number) {
+    const cat = await this.catRepository.findOne({ where: { id } });
+    if (!cat) {
+      throw new Error('Cat not found!');
+    }
+    return await this.catRepository.remove(cat);
   }
 }
